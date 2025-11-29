@@ -11,7 +11,8 @@ def bit_reverse(bin):
     bin_reverse = bin[::-1]
 
     # Converte a string binária invertida de volta para um inteiro
-    return int(bin_reverse, 2)
+    # return int(bin_reverse, 2)
+    return bin_reverse
 
 
 def t_fft(cpx, n, sign):
