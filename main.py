@@ -8,8 +8,10 @@ import fft as ft
 # inicia o timer para medir o tempo de execução do código
 inicio = time.time()
 
+output_file = input("Digite o nome do arquivo de saída: ")
+
 try:
-    df = pd.read_csv("entrada.txt", sep=" ", header=None)
+    df = pd.read_csv(output_file, sep=" ", header=None)
 
     # se tiver uma coluna, entrada real
     if df.shape[1] == 1:
@@ -29,6 +31,7 @@ N = len(dados_complexos)
 print("---Escolha uma das opções abaixo: ---")
 print("1 - FFT por decimação no tempo")
 print("2 - FFT por decimação no frequência")
+print("3 - Convolução Seccionada")
 print("0 - Sair")
 
 opcao = int(input("Opção: "))
@@ -43,6 +46,10 @@ elif opcao == 1:
 elif opcao == 2:
     # chama a fft por decimação no frequência
     X = ft.f_fft(dados_complexos)
+
+elif opcao == 3:
+    # chama a convolução seccionada
+    X = ft.seccionada(dados_complexos)
 
 else:
     print("Opção inválida!")

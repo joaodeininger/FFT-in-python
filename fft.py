@@ -45,7 +45,7 @@ def t_fft(cpx, sign=-1):
     k_indices = np.arange(N // 2)
     # tabela de lookup
     tab = np.exp(sign * 2j * np.pi * k_indices / N)
-    # Revertendo os bits na entrada para não precisar fazer na saída
+    # Revertendo os bits na entrada
     a = bit_reverse(a)
 
     # Butterfly
