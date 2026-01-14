@@ -1,32 +1,7 @@
 import time
-
-import numpy as np
-import pandas as pd
-
+from pandas import read_csv
 import fft as ft
-
-# inicia o timer para medir o tempo de execução do código
-inicio = time.time()
-
-output_file = input("Digite o nome do arquivo de saída: ")
-
-try:
-    df = pd.read_csv(output_file, sep=" ", header=None)
-
-    # se tiver uma coluna, entrada real
-    if df.shape[1] == 1:
-        dados_complexos = df.iloc[:, 0].to_numpy(dtype=np.complex128)
-
-    # se tiver duas colunas, entrada complexa
-    elif df.shape[1] == 2:
-        real = df.iloc[:, 0].to_numpy()
-        imag = df.iloc[:, 1].to_numpy()
-        dados_complexos = real + 1j * imag
-except Exception as e:
-    print(f"Erro ao ler arquivo: {e}")
-    exit()
-
-N = len(dados_complexos)
+from numpy import round
 
 print("---Escolha uma das opções abaixo: ---")
 print("1 - FFT por decimação no tempo")
@@ -41,22 +16,32 @@ if opcao == 0:
 
 elif opcao == 1:
     # chama a fft por decimação no tempo
-    X = ft.t_fft(dados_complexos)
+    dados_complexos = ft.read_input()
+    # inicia o timer para medir o tempo de execução do código
+    inicio = time.time()
+    y = ft.t_fft(dados_complexos)
 
 elif opcao == 2:
     # chama a fft por decimação no frequência
-    X = ft.f_fft(dados_complexos)
+    dados_complexos = ft.read_input()
+    # inicia o timer para medir o tempo de execução do código
+    inicio = time.time()
+    y = ft.f_fft(dados_complexos)
 
 elif opcao == 3:
+    x = read_csv("convolution/xn.txt", sep=" ", header=None)
+    h = read_csv("convolution/hn.txt", sep=" ", header=None)
+    # inicia o timer para medir o tempo de execução do código
+    inicio = time.time()
     # chama a convolução seccionada
-    X = ft.seccionada(dados_complexos)
+    y = ft.seccionada(x, h)
 
 else:
     print("Opção inválida!")
     exit()
 
 # arredondamento de numeros (util para uso do pi, que acaba ficando muito grande)
-y = np.round(X, decimals=10)
+y = round(y, decimals=10)
 
 # exibe o resultado
 print(y)
