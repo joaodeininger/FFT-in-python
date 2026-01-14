@@ -5,6 +5,7 @@ import pandas as pd
 
 import fft as ft
 
+# inicia o timer para medir o tempo de execução do código
 inicio = time.time()
 
 try:
@@ -21,27 +22,38 @@ try:
         dados_complexos = real + 1j * imag
 except Exception as e:
     print(f"Erro ao ler arquivo: {e}")
-    dados_complexos = "Não foram encontrados dados!"
+    exit()
 
 N = len(dados_complexos)
 
-# zero-padding
-if (N & (N - 1) != 0) or N == 0:
-    print(
-        f"⚠️ Aviso: O tamanho do sinal (N={N}) não é uma potência de 2. Realizando zero-padding..."
-    )
+print("---Escolha uma das opções abaixo: ---")
+print("1 - FFT por decimação no tempo")
+print("2 - FFT por decimação no frequência")
+print("0 - Sair")
 
-    N_otimo = 2 ** np.ceil(np.log2(N))
-    dados_complexos = np.pad(dados_complexos, (0, int(N_otimo - N)), "constant")
-    N = len(dados_complexos)
+opcao = int(input("Opção: "))
 
-# fft por decimação no tempo
-X = ft.t_fft(dados_complexos)
+if opcao == 0:
+    exit()
 
-# arredondamento
+elif opcao == 1:
+    # chama a fft por decimação no tempo
+    X = ft.t_fft(dados_complexos)
+
+elif opcao == 2:
+    # chama a fft por decimação no frequência
+    X = ft.f_fft(dados_complexos)
+
+else:
+    print("Opção inválida!")
+    exit()
+
+# arredondamento de numeros (util para uso do pi, que acaba ficando muito grande)
 y = np.round(X, decimals=10)
 
+# exibe o resultado
 print(y)
 
+# finaliza o timer e exibe o tempo de execução
 fim = time.time()
 print(f"Tempo de execução: {fim - inicio:.6f} segundos")
