@@ -29,8 +29,8 @@ elif opcao == 2:
     y = ft.f_fft(dados_complexos)
 
 elif opcao == 3:
-    x = read_csv("convolution/xn.txt", sep=" ", header=None)
-    h = read_csv("convolution/hn.txt", sep=" ", header=None)
+    x = read_csv("convolution/xn.txt", sep="\s+", header=None)
+    h = read_csv("convolution/hn.txt", sep="\s+", header=None)
     # inicia o timer para medir o tempo de execução do código
     inicio = time.time()
     # chama a convolução seccionada

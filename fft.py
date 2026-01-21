@@ -142,56 +142,57 @@ def f_fft(cpx, sign=-1):
 def seccionada(x, h):
     """
     Overlap-Add algorithm for linear convolution
-
-    x : sinal de entrada (1D array)
-    h : FIR filter (1D array)
-
-    retorna: y = x * h (convolução linear)
     """
-    # Garante que x e h sejam arrays numpy
     x = np.asarray(x).ravel()
     h = np.asarray(h).ravel()
 
-    N1= len(x)
+    N1 = len(x)
     N2 = len(h)
-    # L = 2^ceiling(log2(N2))
+    
+    # L calculado como potência de 2 suficiente para conter filtro + bloco
     L = 2 ** (int(np.ceil(np.log2(N2))) + 1)
-
-    # N3 = L/2
+    
+    # Tamanho do bloco de passo (Step size)
     N3 = int(L/2)
 
     # FFT do filtro, zero-padded até L
-    h = n_padding(h, L)
-    H = t_fft(h)
+    h_padded = n_padding(h, L)
+    H = t_fft(h_padded)
 
-    # saída (convolução linear tem tamanho N1 + N2 - 1)
-    y = np.zeros(N1 + N2 - 1)
+    # CORREÇÃO 1: Cria y maior (com sobra) para evitar erro de índice no loop.
+    # O tamanho máximo necessário será aproximadamente N1 + L.
+    y = np.zeros(N1 + L)
 
     position = 0
 
-    while position + N3 <= N1:
-        # bloco de entrada
-        x_block = x[position : position + N3]
+    # CORREÇÃO 2: Loop deve rodar enquanto houver dados, inclusive o resto final
+    while position < N1:
+        # Pega o bloco até onde der (trata o fim do arquivo)
+        end_pos = min(position + N3, N1)
+        x_block = x[position : end_pos]
 
-        # FFT do bloco (zero-padding automático até L)
+        # FFT do bloco (sua função n_padding já completa com zeros até L)
         x_padded = n_padding(x_block, L)
         X = t_fft(x_padded)
 
         # convolução no domínio da frequência
         y_block = ifft(X * H)
         y_re = np.real(y_block)
+        
         # overlap-add
+        # Como y foi criado com sobra, essa linha não dá mais erro de índice
         y[position : position + L] += y_re
 
         position += N3
 
-    return y
+    # CORREÇÃO 3: Corta o excesso do buffer para retornar o tamanho correto da convolução linear
+    return y[:N1 + N2 - 1]
 
 
 def read_input():
     input_file = input("Digite o nome do arquivo de entrada: ")
     try:
-        df = read_csv(input_file, sep=" ", header=None)
+        df = read_csv(input_file, sep="\s+", header=None)
     # se tiver uma coluna, entrada real
         if df.shape[1] == 1:
             dados_complexos = df.iloc[:, 0].to_numpy(dtype=np.complex128)
