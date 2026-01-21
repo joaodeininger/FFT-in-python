@@ -185,6 +185,9 @@ def seccionada(x, h):
 
         position += N3
 
+    print("Exportando arquivo de saída como 'conv.txt' na pasta 'resultados'")
+    np.savetxt("resultados/conv.txt", np.round(y[:N1 + N2 - 1], 2))
+    print("Arquivo exportado com sucesso!")
     # CORREÇÃO 3: Corta o excesso do buffer para retornar o tamanho correto da convolução linear
     return y[:N1 + N2 - 1]
 
@@ -192,7 +195,7 @@ def seccionada(x, h):
 def read_input():
     input_file = input("Digite o nome do arquivo de entrada: ")
     try:
-        df = read_csv(input_file, sep="\s+", header=None)
+        df = read_csv(input_file, sep=" ", header=None)
     # se tiver uma coluna, entrada real
         if df.shape[1] == 1:
             dados_complexos = df.iloc[:, 0].to_numpy(dtype=np.complex128)
