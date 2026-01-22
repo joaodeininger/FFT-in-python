@@ -135,7 +135,6 @@ def f_fft(cpx, sign=-1):
         
     # Bit-reverse ocorre no FINAL para a DIF
     a = bit_reverse(a)
-    
     return a
 
 
@@ -184,18 +183,18 @@ def seccionada(x, h):
         y[position : position + L] += y_re
 
         position += N3
-
-    print("Exportando arquivo de saída como 'conv.txt' na pasta 'resultados'")
-    np.savetxt("resultados/conv.txt", np.round(y[:N1 + N2 - 1], 2))
-    print("Arquivo exportado com sucesso!")
     # CORREÇÃO 3: Corta o excesso do buffer para retornar o tamanho correto da convolução linear
     return y[:N1 + N2 - 1]
 
 
+def export(y):
+    saida = input("Digite o nome do arquivo de saída: ")
+    np.savetxt(f"resultados/{saida}", np.round(y, decimals=2), fmt="%.6f")
+
 def read_input():
     input_file = input("Digite o nome do arquivo de entrada: ")
     try:
-        df = read_csv(input_file, sep=" ", header=None)
+        df = read_csv(f"entradas/{input_file}", sep=" ", header=None)
     # se tiver uma coluna, entrada real
         if df.shape[1] == 1:
             dados_complexos = df.iloc[:, 0].to_numpy(dtype=np.complex128)

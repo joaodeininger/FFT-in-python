@@ -29,8 +29,8 @@ elif opcao == 2:
     y = ft.f_fft(dados_complexos)
 
 elif opcao == 3:
-    x = read_csv("convolution/xn.txt", sep="\s+", header=None)
-    h = read_csv("convolution/hn.txt", sep="\s+", header=None)
+    x = read_csv("convolution/xn.txt", sep="\\s+", header=None)
+    h = read_csv("convolution/hn.txt", sep="\\s+", header=None)
     # inicia o timer para medir o tempo de execução do código
     inicio = time.time()
     # chama a convolução seccionada
@@ -43,9 +43,13 @@ else:
 # arredondamento de numeros (util para uso do pi, que acaba ficando muito grande)
 y = round(y, decimals=10)
 
+# finaliza o timer
+fim = time.time()
+
+ft.export(y)
+
 # exibe o resultado
 print(y)
 
-# finaliza o timer e exibe o tempo de execução
-fim = time.time()
+# exibe o tempo de execução
 print(f"Tempo de execução: {fim - inicio:.6f} segundos")
