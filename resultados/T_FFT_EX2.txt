@@ -1,4 +1,4 @@
-  ## Exemplo 2 - Rampa 1000 pontos##
+## Exemplo 2 - Rampa 2000 pontos (Decimacao no Tempo)##
  Tempo de execução: 0.006469 segundos
  
  (-1000.000000+0.000000j)

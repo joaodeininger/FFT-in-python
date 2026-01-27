@@ -1,4 +1,4 @@
- ## Exemplo 1 - Seno 1000 pontos##
+## Exemplo 1 - Seno 2000 pontos (Decimacao na Frequencia)##
  Tempo de execução: 0.020839 segundos
  
  (0.000000+0.000000j)
