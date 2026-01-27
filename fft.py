@@ -194,7 +194,7 @@ def export(y):
 def read_input():
     input_file = input("Digite o nome do arquivo de entrada: ")
     try:
-        df = read_csv(f"entradas/{input_file}", sep=" ", header=None)
+        df = read_csv(f"entradas/{input_file}", sep="  ", header=None)
     # se tiver uma coluna, entrada real
         if df.shape[1] == 1:
             dados_complexos = df.iloc[:, 0].to_numpy(dtype=np.complex128)
